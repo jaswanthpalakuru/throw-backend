@@ -56,10 +56,12 @@ io.on("connection", (socket: ThrowSocket) => {
         if(room.size == 1) {
             socket.emit('room-created', roomId)
         } else {
-            // only the person who just joined hears this
-            socket.emit('you-joined-the-room', roomId); 
-            // only the OTHER person already in the room hears this. the person who just joined does NOT hear this
-            socket.to(roomId).emit('someone-else-joined-the-room') 
+            // // only the person who just joined hears this
+            // socket.emit('you-joined-the-room', roomId); 
+            // // only the OTHER person already in the room hears this. the person who just joined does NOT hear this
+            // socket.to(roomId).emit('someone-else-joined-the-room') 
+            socket.emit('room-joined', roomId)           // ← was 'you-joined-the-room'
+            socket.to(roomId).emit('peer-joined')
         }
 
 
