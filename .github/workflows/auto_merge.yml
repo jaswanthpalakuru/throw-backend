@@ -1,0 +1,31 @@
+name: Auto merge the code into main
+
+on:
+  push:
+    branches:
+      - feature_backend
+
+jobs:
+  create-and-merge-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Create PR
+        id: create-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: feature_backend
+          destination_branch: main
+          pr_title: "Auto merge from feature branch"
+          pr_body: "Automated PR"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge PR
+        uses: pascalgn/automerge-action@v0.16.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: fastforward
+          PULL_REQUEST: ${{ steps.create-pr.outputs.pr_number}}
