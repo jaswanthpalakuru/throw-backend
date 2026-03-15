@@ -1,0 +1,24 @@
+name: Deploy on AWS
+
+on:
+  push:
+    branches:
+      - main
+      # - feature_backend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into EC2 and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/throw-backend
+            git pull origuin main
+            npm i
+            pm2 restart throw-backend
