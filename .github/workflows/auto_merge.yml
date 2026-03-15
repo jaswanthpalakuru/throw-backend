@@ -25,6 +25,7 @@ jobs:
           destination_branch: main
           pr_title: "Auto merge from feature branch"
           pr_body: "Automated PR"
+          pr_label: "automerge"
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Merge PR
