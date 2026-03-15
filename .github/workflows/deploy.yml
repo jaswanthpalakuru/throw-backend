@@ -19,6 +19,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/throw-backend
-            git pull origuin main
+            git pull origin main
             npm i
             pm2 restart throw-backend
