@@ -17,20 +17,32 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
 
-      - name: Create PR
-        id: create-pr
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: feature_backend
-          destination_branch: main
-          pr_title: "Auto merge from feature branch"
-          pr_body: "Automated PR"
-          pr_label: "automerge"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Merge PR
-        uses: pascalgn/automerge-action@v0.16.4
+      - name: Create and Merge PR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_METHOD: fastforward
-          PULL_REQUEST: ${{ steps.create-pr.outputs.pr_number}}
+        run: |
+          gh pr create \
+          --base main \
+          --head feature_backend \
+          --title "Auto merge from feature branch"
+          --body "Automatedd PR" || echo "PR Already exists"
+
+          gh pr merge feature_backend --merge --admin
+
+      # - name: Create PR
+      #   id: create-pr
+      #   uses: repo-sync/pull-request@v2
+      #   with:
+      #     source_branch: feature_backend
+      #     destination_branch: main
+      #     pr_title: "Auto merge from feature branch"
+      #     pr_body: "Automated PR"
+      #     pr_label: "automerge"
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Merge PR
+      #   uses: pascalgn/automerge-action@v0.16.4
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     MERGE_METHOD: fastforward
+      #     PULL_REQUEST: ${{ steps.create-pr.outputs.pr_number}}
