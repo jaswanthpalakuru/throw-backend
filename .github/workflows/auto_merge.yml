@@ -24,7 +24,7 @@ jobs:
           gh pr create \
           --base main \
           --head feature_backend \
-          --title "Auto merge from feature branch"
+          --title "Auto merge from feature branch" \
           --body "Automatedd PR" || echo "PR Already exists"
 
           gh pr merge feature_backend --merge --admin
